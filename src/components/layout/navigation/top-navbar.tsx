@@ -11,24 +11,6 @@ import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import Link from 'next/link';
 
-const items: MenuProps['items'] = [
-  {
-    label: 'Home',
-    key: 'home',
-    icon: <HomeOutlined />,
-  },
-  {
-    label: 'Navigation Two',
-    key: 'app',
-    icon: <SettingOutlined />,
-  },
-  {
-    label: 'Navigation Three - Submenu',
-    key: 'SubMenu',
-    icon: <SettingOutlined />,
-  },
-];
-
 const TopNavbar: React.FC = () => {
   const { Item, SubMenu } = Menu;
   const [current, setCurrent] = useState('home');
@@ -49,7 +31,7 @@ const TopNavbar: React.FC = () => {
       <Item key="home" icon={<AppstoreOutlined />}>
         <Link href="/">Home</Link>
       </Item>
-      <SubMenu key="username" icon={<SettingOutlined />} title="Register">
+      <SubMenu key="username" icon={<SettingOutlined />} title="User Name">
         <Item
           key="setting:1"
           // icon={<LogoutOutlined />}

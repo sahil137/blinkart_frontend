@@ -8,11 +8,20 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        // customLight: '#FFD93D',
+        // customDark: '#3A3845',
+        dark: '#000814',
+        customBlue1: '#003566',
+        customeBlue2: '#001D3D',
+        customYellow1: '#FFC300',
+        customYellow2: '#FFD60A',
       },
+      // backgroundImage: {
+      //   'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      //   'gradient-conic':
+      //     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      // },
     },
   },
   plugins: [],
