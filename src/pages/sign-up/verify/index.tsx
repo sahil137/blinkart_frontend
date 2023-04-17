@@ -10,6 +10,9 @@ import { auth } from '@/config/firebase';
 import { toast } from 'react-toastify';
 import PasswordInput from '@/components/ui/password-input';
 import YupPassword from 'yup-password';
+import { useAppDispatch } from '@/utils/redux-hooks';
+import { loginUser } from '@/features/user/user-slice';
+import { useRouter } from 'next/router';
 YupPassword(yup);
 const verifyAccount = yup.object({
   password: yup
@@ -24,6 +27,8 @@ type FormValues = {
 const SignUpComplete = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState('');
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -52,15 +57,15 @@ const SignUpComplete = () => {
         await user?.updatePassword(values.password);
         // get the token for this user
         const idTokenResult = await user?.getIdTokenResult();
-        // dispatch(
-        //   loginUser({
-        //     email: user?.email,
-        //     token: idTokenResult?.token,
-        //     name: user?.displayName,
-        //   })
-        // );
+        dispatch(
+          loginUser({
+            email: user?.email,
+            token: idTokenResult?.token,
+            name: user?.displayName,
+          })
+        );
         setLoading(false);
-        // router.push("/");
+        router.push('/');
       }
       console.log('result', data);
     } catch (error: any) {

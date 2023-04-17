@@ -10,14 +10,26 @@ import {
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import Link from 'next/link';
+import firebase from 'firebase/compat/app';
+import { useAppDispatch } from '@/utils/redux-hooks';
+import { logoutUser } from '@/features/user/user-slice';
+import { useRouter } from 'next/router';
 
 const TopNavbar: React.FC = () => {
   const { Item, SubMenu } = Menu;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [current, setCurrent] = useState('home');
 
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
+  };
+
+  const handleLogout = () => {
+    firebase.auth().signOut();
+    dispatch(logoutUser());
+    router.push('/login');
   };
 
   return (
@@ -39,11 +51,7 @@ const TopNavbar: React.FC = () => {
         >
           Option 1
         </Item>
-        <Item
-          key="setting:2"
-          icon={<LogoutOutlined />}
-          // onClick={handleLogout}
-        >
+        <Item key="setting:2" icon={<LogoutOutlined />} onClick={handleLogout}>
           Logout
         </Item>
       </SubMenu>
