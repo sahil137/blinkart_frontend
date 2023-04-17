@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Input from '@/components/ui/input';
 import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
-import { auth } from '@/utils/firebase';
+import { auth } from '@/config/firebase';
 import { toast } from 'react-toastify';
 const emailSchema = object({
   email: string()
