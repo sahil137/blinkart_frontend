@@ -11,13 +11,14 @@ import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import firebase from 'firebase/compat/app';
-import { useAppDispatch } from '@/utils/redux-hooks';
+import { useAppDispatch, useAppSelector } from '@/utils/redux-hooks';
 import { logoutUser } from '@/features/user/user-slice';
 import { useRouter } from 'next/router';
 
 const TopNavbar: React.FC = () => {
   const { Item, SubMenu } = Menu;
   const dispatch = useAppDispatch();
+  const { name, token } = useAppSelector((store) => store?.user);
   const router = useRouter();
   const [current, setCurrent] = useState('home');
 
@@ -43,25 +44,45 @@ const TopNavbar: React.FC = () => {
       <Item key="home" icon={<AppstoreOutlined />}>
         <Link href="/">Home</Link>
       </Item>
-      <SubMenu key="username" icon={<SettingOutlined />} title="User Name">
-        <Item
-          key="setting:1"
-          // icon={<LogoutOutlined />}
-          // onClick={handleLogout}
-        >
-          Option 1
-        </Item>
-        <Item key="setting:2" icon={<LogoutOutlined />} onClick={handleLogout}>
-          Logout
-        </Item>
-      </SubMenu>
-      <Item key="signup" icon={<UserAddOutlined />}>
-        <Link href="/sign-up">Sign Up</Link>
-      </Item>
+      {!!token ? (
+        <>
+          <SubMenu
+            key="username"
+            icon={<SettingOutlined />}
+            title={name ? name : 'User'}
+          >
+            <Item
+              key="setting:1"
+              // icon={<LogoutOutlined />}
+              // onClick={handleLogout}
+            >
+              Option 1
+            </Item>
+            <Item
+              key="setting:2"
+              icon={<LogoutOutlined />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Item>
+          </SubMenu>
+        </>
+      ) : (
+        <></>
+      )}
+      {!token ? (
+        <>
+          <Item key="signup" icon={<UserAddOutlined />}>
+            <Link href="/sign-up">Sign Up</Link>
+          </Item>
 
-      <Item key="login" icon={<UserOutlined />}>
-        <Link href="/login">Login</Link>
-      </Item>
+          <Item key="login" icon={<UserOutlined />}>
+            <Link href="/login">Login</Link>
+          </Item>
+        </>
+      ) : (
+        <></>
+      )}
     </Menu>
   );
 };

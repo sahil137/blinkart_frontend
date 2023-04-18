@@ -1,5 +1,5 @@
 import CustomerLayout from '@/components/layout/customer';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,6 +8,8 @@ import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import { auth } from '@/config/firebase';
 import { toast } from 'react-toastify';
+import { useAppSelector } from '@/utils/redux-hooks';
+import { useRouter } from 'next/router';
 const emailSchema = object({
   email: string()
     .email('Enter a valid email')
@@ -18,6 +20,11 @@ type FormValues = {
 };
 const SignUp = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const user = useAppSelector((store) => store?.user);
+  const router = useRouter();
+  useEffect(() => {
+    if (user && user?.token) router.push('/');
+  }, [user, router]);
   const {
     register,
     handleSubmit,

@@ -9,9 +9,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { GoogleOutlined } from '@ant-design/icons';
 import Loader from '@/components/loader/loader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { auth, googleAuthProvider } from '@/config/firebase';
-import { useAppDispatch } from '@/utils/redux-hooks';
+import { useAppDispatch, useAppSelector } from '@/utils/redux-hooks';
 import { loginUser } from '@/features/user/user-slice';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -28,7 +28,11 @@ export default function Home() {
   const [loadingEmailPassword, setLoadingEmailPassword] = useState(false);
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const dispatch = useAppDispatch();
+  const user = useAppSelector((store) => store?.user);
   const router = useRouter();
+  useEffect(() => {
+    if (user && user?.token) router.replace('/');
+  }, [user, router]);
   const {
     register,
     handleSubmit,
