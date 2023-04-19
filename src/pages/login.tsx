@@ -5,6 +5,7 @@ import PasswordInput from '@/components/ui/password-input';
 import Button from '@/components/ui/button';
 import Link from 'next/link';
 import * as yup from 'yup';
+import * as api from '../api/index';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { GoogleOutlined } from '@ant-design/icons';
@@ -15,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/utils/redux-hooks';
 import { loginUser } from '@/features/user/user-slice';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { setAuthCredentials } from '@/utils/auth-utils';
 const login = yup.object({
   email: yup.string().email('Enter a valid email').required('Email Required'),
   password: yup.string().required('No Password Entered'),
@@ -47,7 +49,7 @@ export default function Home() {
     try {
       const { user } = await auth.signInWithEmailAndPassword(email, password);
       const idTokenResult = await user?.getIdTokenResult();
-      // createUser(idTokenResult?.token);
+      setAuthCredentials(idTokenResult?.token, 'Customer');
       dispatch(
         loginUser({
           email: user?.email,
@@ -55,6 +57,8 @@ export default function Home() {
           name: user?.displayName,
         })
       );
+      await api.createUpdateUser();
+      toast.success('Signed in Successfully');
       router.push('/');
     } catch (error: any) {
       setLoadingEmailPassword(false);
